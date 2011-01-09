@@ -1,0 +1,15 @@
+{namespace example.templates}
+
+/**
+ * @param meaningOfLife
+ * @param weekdays
+ */
+{template .base}
+<div>The meaning of life is: {$meaningOfLife}.</div>
+
+<ul>
+{foreach $weekday in $weekdays}
+  <li>{$weekday}
+{/foreach}
+</ul>
+{/template}
