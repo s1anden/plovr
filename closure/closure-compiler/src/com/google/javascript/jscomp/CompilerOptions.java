@@ -650,6 +650,12 @@ public class CompilerOptions implements Serializable, Cloneable {
   /** List of properties that we report invalidation errors for. */
   Map<String, CheckLevel> propertyInvalidationErrors;
 
+  /**
+   * The name of the scope to prefix all global variable assignments
+   * with. This assumes that all of the resulting code will be wrapped
+   * in a with (scope) { } wrapper.
+   */
+  public String globalScopeName;
 
   //--------------------------------
   // Output options
@@ -873,6 +879,7 @@ public class CompilerOptions implements Serializable, Cloneable {
     replaceStringsPlaceholderToken = "";
     replaceStringsReservedStrings = Collections.emptySet();
     propertyInvalidationErrors = Maps.newHashMap();
+    globalScopeName = "";
 
     // Output
     printInputDelimiter = false;
