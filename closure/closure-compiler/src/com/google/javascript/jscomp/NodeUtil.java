@@ -2901,7 +2901,7 @@ public final class NodeUtil {
    * @param nameNode A name node
    * @return The JSDocInfo for the name node
    */
-  static JSDocInfo getInfoForNameNode(Node nameNode) {
+  public static JSDocInfo getInfoForNameNode(Node nameNode) {
     JSDocInfo info = null;
     Node parent = null;
     if (nameNode != null) {
