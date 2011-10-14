@@ -107,6 +107,13 @@ public class SoySyntaxException extends RuntimeException {
     return this;
   }
 
+  /**
+   * Get the original, unmodified error message returned by the Soy parser
+   * without any of the extra information added by {@link #getMessage()}.
+   */
+  public String getSoyParserErrorMessage() {
+    return super.getMessage();
+  }
 
   @Override public String getMessage() {
     boolean locationKnown = sourceLocation.isKnown();
@@ -125,10 +132,10 @@ public class SoySyntaxException extends RuntimeException {
     }
   }
 
-  
+
   /**
    * @return The original error message from the Soy compiler without any
-   *     metadata about the location where the error appears.  
+   *     metadata about the location where the error appears.
    */
   public String getOriginalMessage() {
     return super.getMessage();
