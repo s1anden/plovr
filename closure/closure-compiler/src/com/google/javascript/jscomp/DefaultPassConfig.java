@@ -565,6 +565,14 @@ public class DefaultPassConfig extends PassConfig {
       passes.add(gatherRawExports);
     }
 
+    boolean scopeGlobalVariables = !options.globalScopeName.isEmpty();
+    if (scopeGlobalVariables) {
+      if (exportedNames == null) {
+        exportedNames = Sets.newHashSet();
+      }
+      exportedNames.add(options.globalScopeName);
+    }
+
     // This comes after property renaming because quoted property names must
     // not be renamed.
     if (options.convertToDottedProperties) {
@@ -591,6 +599,12 @@ public class DefaultPassConfig extends PassConfig {
 
     if (options.aliasKeywords) {
       passes.add(aliasKeywords);
+    }
+
+    if (scopeGlobalVariables) {
+      // If we're putting everything into a global scope, we can't
+      // have named functions.
+      passes.add(anonymizeNamedFunctions);
     }
 
     // Passes after this point can no longer depend on normalized AST
@@ -668,6 +682,11 @@ public class DefaultPassConfig extends PassConfig {
     // Safety checks
     passes.add(sanityCheckAst);
     passes.add(sanityCheckVars);
+
+    // The resulting AST is not sane without the surrounding with.
+    if (scopeGlobalVariables) {
+      passes.add(addScopeToGlobals);
+    }
 
     return passes;
   }
@@ -2149,6 +2168,22 @@ public class DefaultPassConfig extends PassConfig {
           }
         }
       };
+    }
+  };
+
+  private final PassFactory addScopeToGlobals =
+      new PassFactory("addScopeToGlobals", true) {
+    @Override
+    protected CompilerPass createInternal(AbstractCompiler compiler) {
+      return new AddScopeToGlobals(compiler, options.globalScopeName);
+    }
+  };
+
+  private final PassFactory anonymizeNamedFunctions =
+      new PassFactory("anonymizeNamedFunctions", true) {
+    @Override
+    protected CompilerPass createInternal(AbstractCompiler compiler) {
+      return new AnonymizeNamedFunctions(compiler);
     }
   };
 
