@@ -24,6 +24,8 @@ import com.google.common.collect.Sets;
 import com.google.javascript.rhino.IR;
 import com.google.javascript.rhino.Node;
 import com.google.javascript.rhino.SourcePosition;
+import com.google.javascript.rhino.Token;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -640,6 +642,12 @@ public class CompilerOptions implements Serializable, Cloneable {
   String commonJSModulePathPrefix =
       ProcessCommonJSModules.DEFAULT_FILENAME_PREFIX;
 
+  /**
+   * The name of the scope to prefix all global variable assignments
+   * with. This assumes that all of the resulting code will be wrapped
+   * in a with (scope) { } wrapper.
+   */
+  public String globalScopeName;
 
   //--------------------------------
   // Output options
@@ -879,6 +887,7 @@ public class CompilerOptions implements Serializable, Cloneable {
     replaceStringsPlaceholderToken = "";
     replaceStringsReservedStrings = Collections.emptySet();
     propertyInvalidationErrors = Maps.newHashMap();
+    globalScopeName = "";
 
     // Output
     printInputDelimiter = false;
@@ -889,6 +898,7 @@ public class CompilerOptions implements Serializable, Cloneable {
     colorizeErrorOutput = false;
     errorFormat = ErrorFormat.SINGLELINE;
     debugFunctionSideEffectsPath = null;
+    jsOutputFile = "";
     externExports = false;
     nameReferenceReportPath = null;
     nameReferenceGraphPath = null;
@@ -1205,6 +1215,10 @@ public class CompilerOptions implements Serializable, Cloneable {
    */
   public void setNameAnonymousFunctionsOnly(boolean value) {
     this.nameAnonymousFunctionsOnly = value;
+  }
+
+  public void lineLengthThreshold(int value) {
+    this.lineLengthThreshold = value;
   }
 
   public void setColorizeErrorOutput(boolean colorizeErrorOutput) {
