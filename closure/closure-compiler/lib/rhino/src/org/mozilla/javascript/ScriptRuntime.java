@@ -155,13 +155,13 @@ public class ScriptRuntime {
 
     public final static Class<?>
         ContextClass
-            = Kit.classOrNull("org.mozilla.javascript.Context"),
+            = Kit.classOrNull(JarJarHelper.javascriptPrefix + ".Context"),
         ContextFactoryClass
-            = Kit.classOrNull("org.mozilla.javascript.ContextFactory"),
+            = Kit.classOrNull(JarJarHelper.javascriptPrefix + ".ContextFactory"),
         FunctionClass
-            = Kit.classOrNull("org.mozilla.javascript.Function"),
+            = Kit.classOrNull(JarJarHelper.javascriptPrefix + ".Function"),
         ScriptableObjectClass
-            = Kit.classOrNull("org.mozilla.javascript.ScriptableObject");
+            = Kit.classOrNull(JarJarHelper.javascriptPrefix + ".ScriptableObject");
     public static final Class<Scriptable> ScriptableClass =
         Scriptable.class;
 
@@ -3084,7 +3084,7 @@ public class ScriptRuntime {
     // ------------------
 
     public static ScriptableObject getGlobal(Context cx) {
-        final String GLOBAL_CLASS = "org.mozilla.javascript.tools.shell.Global";
+        final String GLOBAL_CLASS = JarJarHelper.javascriptPrefix + ".tools.shell.Global";
         Class<?> globalClass = Kit.classOrNull(GLOBAL_CLASS);
         if (globalClass != null) {
             try {
@@ -3673,7 +3673,7 @@ public class ScriptRuntime {
     private static class DefaultMessageProvider implements MessageProvider {
         public String getMessage(String messageId, Object[] arguments) {
             final String defaultResource
-                = "org.mozilla.javascript.resources.Messages";
+                = JarJarHelper.javascriptPrefix + ".resources.Messages";
 
             Context cx = Context.getCurrentContext();
             Locale locale = cx != null ? cx.getLocale() : Locale.getDefault();
